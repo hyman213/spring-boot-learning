@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
-    OrderMapper orderMapper;
+    private OrderMapper orderMapper;
 
     @Override
     public List<OrderInfo> queryOrderInfoList(OrderInfo orderInfo) {

@@ -15,17 +15,22 @@ spring:
       time-between-eviction-runs-millis: 120000
       # 一个连接在池中最大、最小生存的时间（毫秒）
       # max-evictable-idle-time-millis:
+      # 销毁线程中如果检测到当前连接的最后活跃时间和当前时间的差值大于minEvictableIdleTimeMillis，则关闭当前连接。
       min-evictable-idle-time-millis:  300000
       # 用来检测连接是否有效的sql, 如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。
       validation-query: SELECT 'x'
       # validation-query-timeout:
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于 timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效
       test-while-idle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
       test-on-borrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
       test-on-return: false
       # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
       filter: stat,wall,slf4j,config
-      # 打开PSCache，并且指定每个连接上PSCache的大小, mysql下建议关闭
+      # #是否缓存preparedStatement，也就是PSCache。打开PSCache，并且指定每个连接上PSCache的大小, mysql下建议关闭
       #pool-prepared-statements: true
+      #要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
       #max-pool-prepared-statement-per-connection-size: 25
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录。如果需要加密需配置：config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
       connectionProperties: druid.stat.mergeSql=true;druid.stat.logSlowSql=true;druid.stat.slowSqlMillis=5000;
@@ -42,4 +47,16 @@ spring:
         # 是否允许清空统计数据
         reset-enable: true
 
-
+      # WebStatFilter用于采集web-jdbc关联监控的数据
+      web-stat-filter:
+        # 添加过滤规则
+        url-pattern: /*
+        # 排除一些不必要的url
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+        enabled: true
+        # 配置profileEnable能够监控单个url调用的sql列表
+        profile-enable: true
+        # session统计功能
+        session-stat-enable: true
+        # 默认1000
+        session-stat-max-count: 2

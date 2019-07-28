@@ -60,3 +60,6 @@ spring:
         session-stat-enable: true
         # 默认1000
         session-stat-max-count: 2
+
+customer:
+  name: Hello

@@ -6,7 +6,11 @@
 
     <groupId>com.hyman.springboot</groupId>
     <artifactId>learning-example</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.1</version>
+    <modules>
+        <module>spring-boot-starter-learning</module>
+    </modules>
 
 
 </project>

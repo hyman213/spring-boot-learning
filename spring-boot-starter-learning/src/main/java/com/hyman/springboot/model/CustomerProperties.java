@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @version： 1.0.0
  */
 @ConfigurationProperties(prefix = "customer")
-@Component
 public class CustomerProperties {
 
     private static final String DEFAULT_NAME = "Hyman";
